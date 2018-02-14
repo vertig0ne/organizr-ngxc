@@ -20,4 +20,4 @@ This is how the nginx authentication works. In the same way as Organizr v1 worke
 
 In order to use this you will need to of course update your location blocks to use something along the lines of `auth_request /auth-$SONARR_AUTH` 
 
-For ease right this second it follows pattern '$TABNAME_AUTH' where 'TABNAME' is the name of the tab in uppercase lettering, spaces are converted to underscores. This may or may not be changed in the future.
+For ease of use, at this time, it follows the pattern '$TABNAME_AUTH' where 'TABNAME' is the name of the tab in uppercase letters and any spaces need to be underscores. This may or may not be changed in the future.
