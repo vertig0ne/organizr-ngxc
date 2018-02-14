@@ -9,3 +9,15 @@ Organizr v2 introduces groups for permissions, so you can have minimum permissio
 We make use of nginx variables by storing them in a seperate file. We manually include that file in our `server {}` block so the variables are available to each `location {}` block. We can give the appearance of changing the levels on the tab page and having them write to the configuration file.
 
 Nginx reload each time the configuration file is saved may be necessary. Will be looking into options for that in the future.
+
+
+    location ~ /auth-(.*) {
+        internal;
+        rewrite ^ /api/?v1/auth&group=$1;
+    }
+    
+This is how the nginx authentication works. In the same way as Organizr v1 worked with a few minor changes. Only one authentication block is necessary now. As we can call this via `auth_request /auth-0`
+
+In order to use this you will need to of course update your location blocks to use something along the lines of `auth_request /auth-$SONARR_AUTH` 
+
+For ease right this second it follows pattern '$TABNAME_AUTH' Where 'TABNAME' is the name of the tab in uppercase lettering, spaces are converted to underscores. This may or may not be changed in the future.
