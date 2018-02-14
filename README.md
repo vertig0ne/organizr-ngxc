@@ -16,7 +16,7 @@ Nginx reload each time the configuration file is saved may be necessary. Will be
         rewrite ^ /api/?v1/auth&group=$1;
     }
     
-This is how the nginx authentication works. In the same way as Organizr v1 worked with a few minor changes. Only one authentication block is necessary now. As we can call this via `auth_request /auth-0`
+This is how the nginx authentication works. In the same way as Organizr v1 worked with a few minor changes. Only one authentication block is necessary now. As we can call this via `auth_request /auth-0`. The number is the `group_id` for the group with the lowest permission allowed to access.
 
 In order to use this you will need to of course update your location blocks to use something along the lines of `auth_request /auth-$SONARR_AUTH` 
 
