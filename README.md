@@ -1,5 +1,5 @@
 # NGXConfigurator
-Plugin for Organizr v2 that configures nginx auth_request locations so levels can be set dynamically.
+Plugin for Organizr v2 that configures nginx auth_request locations so permission levels can be set dynamically.
 
 ## Things to note:
 So some notes to be prepared for.
