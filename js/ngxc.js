@@ -34,7 +34,7 @@ $(document).on('change asColorPicker::close', '#NGXC-settings-page :input', func
 
 $(document).on('click', '#NGXC-settings-button', function() {
     var post = {
-        plugin:'NGXC/settings/get', // used for switch case in your API call
+        plugin:'ngxc/settings/get', // used for switch case in your API call
     };
     ajaxloader(".content-wrap","in");
     organizrAPI('POST','api/?v1/plugin',post).success(function(data) {
@@ -48,7 +48,7 @@ $(document).on('click', '#NGXC-settings-button', function() {
 
 $(document).on('click', '.NGXC-WriteConfig', function() {
     var post = {
-        plugin:'NGXC/settings/save', // used for switch case in your API call
+        plugin:'ngxc/settings/save', // used for switch case in your API call
     };
     ajaxloader(".content-wrap","in");
     organizrAPI('POST','api/?v1/plugin',post).success(function(data) {
