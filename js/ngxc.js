@@ -1,4 +1,4 @@
-$(document).on('change asColorPicker::close', '#NGXC-settings-page :input', function(e) {
+$(document).on('change asColorPicker::close', '#ngxc-settings-page :input', function(e) {
     var input = $(this);
     switch ($(this).attr('type')) {
         case 'switch':
@@ -32,7 +32,7 @@ $(document).on('change asColorPicker::close', '#NGXC-settings-page :input', func
 
 });
 
-$(document).on('click', '#NGXC-settings-button', function() {
+$(document).on('click', '#ngxc-settings-button', function() {
     var post = {
         plugin:'ngxc/settings/get', // used for switch case in your API call
     };
@@ -46,7 +46,7 @@ $(document).on('click', '#NGXC-settings-button', function() {
     ajaxloader();
 });
 
-$(document).on('click', '.NGXC-WriteConfig', function() {
+$(document).on('click', '.ngxc-WriteConfig', function() {
     var post = {
         plugin:'ngxc/settings/save', // used for switch case in your API call
     };
