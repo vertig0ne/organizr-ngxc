@@ -45,7 +45,7 @@ $(document).on('click', '#ngxc-settings-button', function() {
     ajaxloader();
 });
 
-$(document).on('click', '.ngxc-WriteConfig', function() {
+$(document).on('click', '.ngxc-write-config', function() {
     var post = {
         plugin:'ngxc/settings/save', // used for switch case in your API call
     };
