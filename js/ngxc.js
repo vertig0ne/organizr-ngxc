@@ -29,7 +29,6 @@ $(document).on('change asColorPicker::close', '#ngxc-settings-page :input', func
         },
         2000
     );
-
 });
 
 $(document).on('click', '#ngxc-settings-button', function() {

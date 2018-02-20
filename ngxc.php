@@ -124,7 +124,7 @@ function NGXCGetSettings() {
 		array(
 			'type' => 'button',
                         'label' => 'Write Config',
-                        'class' => 'NGXC-WriteConfig',
+                        'class' => 'ngxc-write-config',
                         'icon' => 'fa fa-save',
                         'text' => 'Write Config'
                )
