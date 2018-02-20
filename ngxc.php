@@ -12,29 +12,28 @@ $GLOBALS['plugins'][]['ngxc'] = array(
     'homepage'=>false
 );
 
-$_ngxcTypes = array(
-        'airsonic' => 'AirSonic',
-        'calibre-web' => 'Calibre-Web',
-        'deluge' => 'Deluge',
-        'guacamole' => 'Guacamole',
-        'jackett' => 'Jackett',
-        'lidarr' => 'Lidarr',
-        'mylar' => 'Mylar',
-        'netdata' => 'NetData',
-        'nowshowing' => 'NowShowing',
-        'nzbget' => 'NZBGet',
-        'nzbhydra' => 'NZBHydra',
-        'ombi' => 'Ombi',
-        'plex' => 'Plex',
-        'qbittorrent' => 'qbittorrent',
-        'radarr' => 'Radarr',
-        'rutorrent' => 'rUtorrent',
-        'sonarr' => 'Sonarr',
-        'tautulli' => 'Tautulli',
-        'ubooquity' => 'Ubooquity'
-);
-
 function _ngxcTypeOptions() {
+        $_ngxcTypes = array(
+                'airsonic' => 'AirSonic',
+                'calibre-web' => 'Calibre-Web',
+                'deluge' => 'Deluge',
+                'guacamole' => 'Guacamole',
+                'jackett' => 'Jackett',
+                'lidarr' => 'Lidarr',
+                'mylar' => 'Mylar',
+                'netdata' => 'NetData',
+                'nowshowing' => 'NowShowing',
+                'nzbget' => 'NZBGet',
+                'nzbhydra' => 'NZBHydra',
+                'ombi' => 'Ombi',
+                'plex' => 'Plex',
+                'qbittorrent' => 'qbittorrent',
+                'radarr' => 'Radarr',
+                'rutorrent' => 'rUtorrent',
+                'sonarr' => 'Sonarr',
+                'tautulli' => 'Tautulli',
+                'ubooquity' => 'Ubooquity'
+        );
         $data = array();
         $t = 0;
         foreach ($_ngxcTypes as $key => $value) {
@@ -53,13 +52,13 @@ function _ngxcGetAllTabs() {
 
 function _ngxcGetTabs() {
 	$tabs = _ngxcGetAllTabs();
-	$types = _ngxcTypeOptions();
+        $types = _ngxcTypeOptions();
         $t = 0;
 	$data = array();
         foreach ($tabs["tabs"] as $tab) {
                 if ($tab['name'] != "Homepage" && $tab['name'] != "Settings") {
                         $name = strtoupper(str_replace(' ','_',$tab['name']));
-                        $data[$t] = array(
+                        $data[$tab['name']] = array(
                                 array(
                                         'type' => 'select',
                                         'name' => 'NGXC_'.$name.'_TYPE',
@@ -120,8 +119,7 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
 }
 
 function NGXCGetSettings() {
-	$data = array();
-	$data['Tabs'] = _ngxcGetTabs();
+	$data = _ngxcGetTabs();
         $data['Actions'] = array(
 		array(
 			'type' => 'button',
