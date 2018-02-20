@@ -21,10 +21,10 @@ $(document).on('change asColorPicker::close', '#ngxc-settings-page :input', func
     //callbacks.add( buildCustomizeAppearance );
     settingsAPI(post,callbacks);
     //disable button then renable
-    $('#PHPMAILER-settings-page :input').prop('disabled', 'true');
+    $('#ngxc-settings-page :input').prop('disabled', 'true');
     setTimeout(
         function(){
-            $('#PHPMAILER-settings-page :input').prop('disabled', null);
+            $('#ngxc-settings-page :input').prop('disabled', null);
             input.emulateTab();
         },
         2000
@@ -39,7 +39,7 @@ $(document).on('click', '#ngxc-settings-button', function() {
     ajaxloader(".content-wrap","in");
     organizrAPI('POST','api/?v1/plugin',post).success(function(data) {
         var response = JSON.parse(data);
-        $('#NGXC-settings-items').html(buildFormGroup(response.data));
+        $('#ngxc-settings-items').html(buildFormGroup(response.data));
     }).fail(function(xhr) {
         console.error("Organizr Function: API Connection Failed");
     });
