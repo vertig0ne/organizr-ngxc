@@ -129,6 +129,26 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
+function _ngxcWriteTabLidarrConfig($url, $path, $name, $group) {
+        $data = "location ".$path." {
+                auth_request /auth-".$group.";
+                proxy_pass ".$url.";
+                
+                proxy_set_header X-Real-IP $remote_addr; 
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_http_version 1.1;
+                proxy_no_cache $cookie_session;
+                
+                location ".$path."api {
+                        auth_request off;
+                        proxy_pass ".$url."/api;
+                }
+            }";
+
+        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+}
+
 ###############
 ## PUBLIC FUNCTIONS
 ###############
