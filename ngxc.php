@@ -96,6 +96,9 @@ function _ngxcWriteTabConfig($tab) {
                 case "lidarr":
                         _ngxcWriteTabLidarrConfig($url, $path, $nameLower, $tab["group_id"]);
                 break;
+                case "lidarr":
+                        _ngxcWriteTabAirSonicConfig($url, $path, $nameLower, $tab["group_id"]);
+                break;
         }
 }
 
@@ -104,15 +107,15 @@ function _ngxcWriteTabConfig($tab) {
 ###############
 
 function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
-        $data = "location ".$path." {
-            auth_request /auth-".$group.";
-            proxy_pass ".$url.";
+        $data = "location $path {
+            auth_request /auth-$group;
+            proxy_pass $url;
 
-            proxy_set_header X-Real-IP $remote_addr; 
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Real-IP \$remote_addr; 
+            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto \$scheme;
             proxy_http_version 1.1;
-            proxy_no_cache $cookie_session;
+            proxy_no_cache \$cookie_session;
 
             proxy_set_header Accept-Encoding \"\";
             sub_filter
@@ -122,9 +125,29 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
 
             location ".$path."api {
                 auth_request off;
-                proxy_pass ".$url."/api;
+                proxy_pass $url/api;
             }
         }";
+
+        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+}
+
+function _ngxcWriteTabLidarrConfig($url, $path, $name, $group) {
+        $data = "location $path {
+                auth_request /auth-$group;
+                proxy_pass $url;
+                
+                proxy_set_header X-Real-IP \$remote_addr; 
+                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto \$scheme;
+                proxy_http_version 1.1;
+                proxy_no_cache \$cookie_session;
+                
+                location ".$path."api {
+                        auth_request off;
+                        proxy_pass $url/api;
+                }
+            }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
