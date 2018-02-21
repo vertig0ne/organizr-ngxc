@@ -107,19 +107,19 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
         $data = "location ".$path." {
             auth_request /auth-".$group.";
             proxy_pass ".$url.";
-            
+
             proxy_set_header X-Real-IP $remote_addr; 
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
             proxy_http_version 1.1;
             proxy_no_cache $cookie_session;
-            
+
             proxy_set_header Accept-Encoding \"\";
             sub_filter
                 '<//head>'
                 '<link rel=\"stylesheet\" type=\"text/css\" href=\"//rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
             sub_filter_once on;
-            
+
             location ".$path."api {
                 auth_request off;
                 proxy_pass ".$url."/api;
@@ -128,8 +128,6 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
-
-
 
 ###############
 ## PUBLIC FUNCTIONS
@@ -151,7 +149,7 @@ function NGXCGetSettings() {
 
 function NGXCWriteConfig() {
 	$tabs = _ngxcGetAllTabs();
-	foreach ($tabs as $tab) {
+	foreach ($tabs["tabs"] as $tab) {
                 _ngxcWriteTabConfig($tab);
         }
         $file_contents = "include ".$GLOBALS['dbLocation']."proxy/*.conf;\n";
