@@ -109,7 +109,7 @@ function _ngxcWriteTabConfig($tab) {
 function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
         $data = "location $path {
             auth_request /auth-$group;
-            proxy_pass $url;
+            proxy_pass $url/;
 
             proxy_set_header X-Real-IP \$remote_addr; 
             proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -123,7 +123,7 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
                 '<link rel=\"stylesheet\" type=\"text/css\" href=\"//rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
             sub_filter_once on;
 
-            location ".$path."api {
+            location $path/api {
                 auth_request off;
                 proxy_pass $url/api;
             }
@@ -135,7 +135,7 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
 function _ngxcWriteTabLidarrConfig($url, $path, $name, $group) {
         $data = "location $path {
                 auth_request /auth-$group;
-                proxy_pass $url;
+                proxy_pass $url/;
                 
                 proxy_set_header X-Real-IP \$remote_addr; 
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -143,7 +143,7 @@ function _ngxcWriteTabLidarrConfig($url, $path, $name, $group) {
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
                 
-                location ".$path."api {
+                location $path/api {
                         auth_request off;
                         proxy_pass $url/api;
                 }
