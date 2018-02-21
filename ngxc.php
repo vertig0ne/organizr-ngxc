@@ -12,8 +12,13 @@ $GLOBALS['plugins'][]['ngxc'] = array(
     'homepage'=>false
 );
 
+###############
+## INTERNAL FUNCTIONS
+###############
+
 function _ngxcTypeOptions() {
         $_ngxcTypes = array(
+                'none' => 'None',
                 'airsonic' => 'AirSonic',
                 'calibre-web' => 'Calibre-Web',
                 'deluge' => 'Deluge',
@@ -53,7 +58,6 @@ function _ngxcGetAllTabs() {
 function _ngxcGetTabs() {
 	$tabs = _ngxcGetAllTabs();
         $types = _ngxcTypeOptions();
-        $t = 0;
 	$data = array();
         foreach ($tabs["tabs"] as $tab) {
                 if ($tab['name'] != "Homepage" && $tab['name'] != "Settings") {
@@ -63,7 +67,7 @@ function _ngxcGetTabs() {
                                         'type' => 'select',
                                         'name' => 'NGXC_'.$name.'_TYPE',
                                         'label' => 'Type of Proxy',
-                                        'value' => $GLOBALS['NGXC_'.$name.'_TYPE'] ?: '',
+                                        'value' => $GLOBALS['NGXC_'.$name.'_TYPE'] ?: 'None',
                                         'options' => $types
                                 ),
                                 array(
@@ -73,24 +77,31 @@ function _ngxcGetTabs() {
                                         'value' => $GLOBALS['NGXC_'.$name.'_URL'] ?: '',
                                 )
                         );
-                        $t++;
                 }
         }
 	return $data;
 }
 
 function _ngxcWriteTabConfig($tab) {
-        $name = strtoupper(str_replace(' ','_',$tab['name']));
-        $nameLower = strtolower(str_replace(' ','_',$tab['name']));
+        $name = strtoupper(str_replace(' ','_',$tab["name"]));
+        $nameLower = strtolower(str_replace(' ','_',$tab["name"]));
         $type = $GLOBALS['NGXC_'.$name.'_TYPE'];
-        $path = $tab['path'];
+        $path = $tab["url"];
         $url = $GLOBALS['NGXC_'.$name.'_URL'];
         switch($type) {
-                case 'sonarr':
-                        _ngxcWriteTabSonarrConfig($url, $path, $name, $tab["group_id"]);
+                case "sonarr":
+                case "radarr":
+                        _ngxcWriteTabSonarrConfig($url, $path, $nameLower, $tab["group_id"]);
+                break;
+                case "lidarr":
+                        _ngxcWriteTabLidarrConfig($url, $path, $nameLower, $tab["group_id"]);
                 break;
         }
 }
+
+###############
+## CONFIGURATION WRITERS
+###############
 
 function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
         $data = "location ".$path." {
@@ -106,7 +117,7 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
             proxy_set_header Accept-Encoding \"\";
             sub_filter
                 '<//head>'
-                '<link rel=\"stylesheet\" type=\"text//css\" href=\"//rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
+                '<link rel=\"stylesheet\" type=\"text/css\" href=\"//rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
             sub_filter_once on;
             
             location ".$path."api {
@@ -117,6 +128,12 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
+
+
+
+###############
+## PUBLIC FUNCTIONS
+###############
 
 function NGXCGetSettings() {
 	$data = _ngxcGetTabs();
@@ -137,7 +154,7 @@ function NGXCWriteConfig() {
 	foreach ($tabs as $tab) {
                 _ngxcWriteTabConfig($tab);
         }
-        $file_contents = "include " .$GLOBALS['dbLocation']."proxy/*.conf;\n";
+        $file_contents = "include ".$GLOBALS['dbLocation']."proxy/*.conf;\n";
 
         file_put_contents($GLOBALS['dbLocation'].'ngxc.conf', $file_contents);
 }
