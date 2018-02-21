@@ -175,7 +175,11 @@ function NGXCWriteConfig() {
 	foreach ($tabs["tabs"] as $tab) {
                 _ngxcWriteTabConfig($tab);
         }
-        $file_contents = "include ".$GLOBALS['dbLocation']."proxy/*.conf;\n";
+        $file_contents = "location ~ /auth-(.*) {
+                internal;
+                rewrite ^ /api/?v1/auth&group=$1;
+        }\n";
+        $file_contents .= "include ".$GLOBALS['dbLocation']."proxy/*.conf;\n";
 
         file_put_contents($GLOBALS['dbLocation'].'ngxc.conf', $file_contents);
 }
