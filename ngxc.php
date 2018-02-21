@@ -115,7 +115,7 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
             }
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].DIRECTORY_SEPERATOR.'proxy'.DIRECTORY_SEPERATOR.$name.'.conf', $data);
+        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function NGXCGetSettings() {
@@ -133,14 +133,11 @@ function NGXCGetSettings() {
 }
 
 function NGXCWriteConfig() {
-	$file_contents = "";
 	$tabs = _ngxcGetAllTabs();
 	foreach ($tabs as $tab) {
                 _ngxcWriteTabConfig($tab);
-		$name = str_replace('NGXC_', '', $tab['name']);
-		$file_contents .= "set $" .$name." ".$tab['value'].";\n";
         }
-        $file_contents .= "\ninclude " .$GLOBALS['dbLocation']."/proxy/*.conf;\n";
+        $file_contents = "include " .$GLOBALS['dbLocation']."proxy/*.conf;\n";
 
-        file_put_contents($GLOBALS['dbLocation'].DIRECTORY_SEPERATOR.'ngxc.conf', $file_contents);
+        file_put_contents($GLOBALS['dbLocation'].'ngxc.conf', $file_contents);
 }
