@@ -29,13 +29,16 @@ function _ngxcTypeOptions() {
                 'netdata' => 'NetData',
                 'nowshowing' => 'NowShowing',
                 'nzbget' => 'NZBGet',
+                'nzbgetDark' => 'NZBGet (Dark Theme)',
                 'nzbhydra' => 'NZBHydra',
                 'ombi' => 'Ombi',
                 'plex' => 'Plex',
                 'qbittorrent' => 'qbittorrent',
                 'radarr' => 'Radarr',
+                'radarrDarker' => 'Radarr (Darkerr Theme)',
                 'rutorrent' => 'rUtorrent',
                 'sonarr' => 'Sonarr',
+                'sonarrDarker' => 'Sonarr (Darkerr Theme)',
                 'tautulli' => 'Tautulli',
                 'ubooquity' => 'Ubooquity'
         );
@@ -91,13 +94,12 @@ function _ngxcWriteTabConfig($tab) {
         switch($type) {
                 case "sonarr":
                 case "radarr":
+                case "lidarr":
                         _ngxcWriteTabSonarrConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
-                case "lidarr":
-                        _ngxcWriteTabLidarrConfig($url, $path, $nameLower, $tab["group_id"]);
-                        break;
-                case "lidarr":
-                        _ngxcWriteTabAirSonicConfig($url, $path, $nameLower, $tab["group_id"]);
+                case "sonarrDarker":
+                case "radarrDarker":
+                        _ngxcWriteTabSonarrConfig($url, $path, $nameLower, $tab["group_id"], true);
                         break;
                 case "airsonic":
                         _ngxcWriteTabAirSonicConfig($url, $path, $nameLower, $tab["group_id"]);
@@ -125,6 +127,9 @@ function _ngxcWriteTabConfig($tab) {
                         break;
                 case "nzbget":
                         _ngxcWriteTabNzbGetConfig($url, $path, $nameLower, $tab["group_id"]);
+                        break;
+                case "nzbgetDark":
+                        _ngxcWriteTabNzbGetConfig($url, $path, $nameLower, $tab["group_id"], true);
                         break;
                 case "nzbhydra":
                         _ngxcWriteTabNzbHydraConfig($url, $path, $nameLower, $tab["group_id"]);
@@ -157,7 +162,7 @@ function _ngxcWriteTabConfig($tab) {
 ## CONFIGURATION WRITERS
 ###############
 
-function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
+function _ngxcWriteTabSonarrConfig($url, $path, $name, $group, $theme = false) {
         $data = "
         location $path {
                 auth_request /auth-$group;
@@ -166,35 +171,19 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_http_version 1.1;
-                proxy_no_cache \$cookie_session;
-
+                proxy_no_cache \$cookie_session;";
+        
+        if ($theme) {
+                $data .= "
                 proxy_set_header Accept-Encoding \"\";
                 sub_filter '<//head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"//rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
-                sub_filter_once on;
+                sub_filter_once on;\n";
+        }
 
+        $data .= "
                 location ".$path."api {
                         auth_request off;
                         proxy_pass $url/api;
-                }
-        }";
-
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
-}
-
-function _ngxcWriteTabLidarrConfig($url, $path, $name, $group) {
-        $data = "
-        location $path {
-                auth_request /auth-$group;
-                proxy_pass $url/;
-                proxy_set_header X-Real-IP \$remote_addr; 
-                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto \$scheme;
-                proxy_http_version 1.1;
-                proxy_no_cache \$cookie_session;
-                
-                location ".$path."api {
-                        auth_request off;
-                        proxy_pass $url\api;
                 }
         }";
 
@@ -343,7 +332,7 @@ function _ngxcWriteTabNowshowingConfig($url, $path, $name, $group) {
       file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
-function _ngxcWriteTabNzbGetConfig($url, $path, $name, $group) {
+function _ngxcWriteTabNzbGetConfig($url, $path, $name, $group, $theme = false) {
         $data = "
         location $path {
                 auth_request /auth-$group;
@@ -354,8 +343,14 @@ function _ngxcWriteTabNzbGetConfig($url, $path, $name, $group) {
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
                 proxy_set_header Accept-Encoding \"\";
+        ";
+        if ($theme) {
+                $data .= "
                 sub_filter '</head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/ydkmlt84/DarkerNZBget/develop/nzbget_custom_darkblue.css\"></head>';
                 sub_filter_once on;
+                ";
+        }
+        $data .= "
         }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
