@@ -21,6 +21,7 @@ function _ngxcTypeOptions() {
                 'none' => 'None',
                 'airsonic' => 'AirSonic',
                 'calibre-web' => 'Calibre-Web',
+                'calibre-webBlur' => 'Calibre-Web (Blur Theme)',
                 'deluge' => 'Deluge',
                 'guacamole' => 'Guacamole',
                 'jackett' => 'Jackett',
@@ -106,6 +107,9 @@ function _ngxcWriteTabConfig($tab) {
                         break;
                 case "calibre-web":
                         _ngxcWriteTabCalibreWebConfig($url, $path, $nameLower, $tab["group_id"]);
+                        break;
+                case "calibre-webBlur":
+                        _ngxcWriteTabCalibreWebConfig($url, $path, $nameLower, $tab["group_id"], true);
                         break;
                 case "deluge":
                         _ngxcWriteTabDelugeConfig($url, $path, $nameLower, $tab["group_id"]);
@@ -206,17 +210,32 @@ function _ngxcWriteTabAirSonicConfig($url, $path, $name, $group) {
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
-function _ngxcWriteTabCalibreWebConfig($url, $path, $name, $group) {
+function _ngxcWriteTabCalibreWebConfig($url, $path, $name, $group, $theme = false) {
         $data = "
         location $path {
                 auth_request /auth-$group;
-                proxy_bind              \$server_addr;
-                proxy_pass              $url/;
-                proxy_set_header        Host            \$http_host;
-                proxy_set_header        X-Forwarded-For \$proxy_add_x_forwarded_for;
-                proxy_set_header        X-Scheme        \$scheme;
-                proxy_set_header        X-Script-Name   $path;
-        }";
+                proxy_bind \$server_addr;
+                proxy_pass $url/;
+                proxy_set_header Host \$http_host;
+                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                proxy_set_header X-Scheme \$scheme;
+                proxy_set_header X-Script-Name $path;
+        ";
+        if ($theme) {
+                $data .= "
+                set \$test \"\";
+                if (\$http_user_agent ~* '(iPhone|iPod|android|blackberry)') {
+                        set \$test \"\${test}A\"
+                }
+
+                if (\$test == \"\") {
+                        proxy_set_header Accept-Encoding \"\";
+                        sub_filter '</head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/leram84/layer.Cake/dev/CSS/caliBlur-Demo.css\"> </head>';
+                        sub_filter_once on;
+                }
+                ";
+        }
+        $data .= "}";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
