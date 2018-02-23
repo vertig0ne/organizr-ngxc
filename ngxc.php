@@ -179,7 +179,6 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group, $theme = false) {
                 sub_filter '<//head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"//rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
                 sub_filter_once on;\n";
         }
-
         $data .= "
                 location ".$path."api {
                         auth_request off;
@@ -537,7 +536,7 @@ function NGXCWriteConfig() {
         }
         $file_contents = "location ~ /auth-(.*) {
                 internal;
-                rewrite ^ /api/?v1/auth&group=$1;
+                rewrite ^/auth-(.*) /api/?v1/auth&group=$1;;
         }\n";
         $file_contents .= "include ".$GLOBALS['dbLocation']."proxy/*.conf;\n";
 
