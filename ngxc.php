@@ -158,36 +158,34 @@ function _ngxcWriteTabConfig($tab) {
 ###############
 
 function _ngxcWriteTabSonarrConfig($url, $path, $name, $group) {
-        $data = "location $path {
-            auth_request /auth-$group;
-            proxy_pass $url/;
+        $data = "
+        location $path {
+                auth_request /auth-$group;
+                proxy_pass $url/;
+                proxy_set_header X-Real-IP \$remote_addr; 
+                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto \$scheme;
+                proxy_http_version 1.1;
+                proxy_no_cache \$cookie_session;
 
-            proxy_set_header X-Real-IP \$remote_addr; 
-            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto \$scheme;
-            proxy_http_version 1.1;
-            proxy_no_cache \$cookie_session;
+                proxy_set_header Accept-Encoding \"\";
+                sub_filter '<//head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"//rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
+                sub_filter_once on;
 
-            proxy_set_header Accept-Encoding \"\";
-            sub_filter
-                '<//head>'
-                '<link rel=\"stylesheet\" type=\"text/css\" href=\"//rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
-            sub_filter_once on;
-
-            location ".$path."api {
-                auth_request off;
-                proxy_pass $url/api;
-            }
+                location ".$path."api {
+                        auth_request off;
+                        proxy_pass $url/api;
+                }
         }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabLidarrConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
-
                 proxy_set_header X-Real-IP \$remote_addr; 
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto \$scheme;
@@ -198,13 +196,14 @@ function _ngxcWriteTabLidarrConfig($url, $path, $name, $group) {
                         auth_request off;
                         proxy_pass $url\api;
                 }
-            }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabAirSonicConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_set_header X-Real-IP         \$remote_addr;
                 proxy_set_header X-Forwarded-For   \$proxy_add_x_forwarded_for;
@@ -214,13 +213,14 @@ function _ngxcWriteTabAirSonicConfig($url, $path, $name, $group) {
                 proxy_max_temp_file_size           0;
                 proxy_pass                         $url/;
                 proxy_redirect                     http:// https://;
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabCalibreWebConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_bind              \$server_addr;
                 proxy_pass              $url/;
@@ -228,13 +228,14 @@ function _ngxcWriteTabCalibreWebConfig($url, $path, $name, $group) {
                 proxy_set_header        X-Forwarded-For \$proxy_add_x_forwarded_for;
                 proxy_set_header        X-Scheme        \$scheme;
                 proxy_set_header        X-Script-Name   $path;
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabDelugeConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
                 proxy_set_header X-Deluge-Base \"$path\";
@@ -249,13 +250,14 @@ function _ngxcWriteTabDelugeConfig($url, $path, $name, $group) {
                 proxy_no_cache \$cookie_session;
                 proxy_buffers 32 4k;
                 add_header X-Frame-Options SAMEORIGIN;
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabGuacamoleConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
                 proxy_buffering off;
@@ -266,13 +268,14 @@ function _ngxcWriteTabGuacamoleConfig($url, $path, $name, $group) {
                 proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
-              }";
+        }";
 
       file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabJackettConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
                 proxy_set_header Host \$host;
@@ -291,20 +294,22 @@ function _ngxcWriteTabJackettConfig($url, $path, $name, $group) {
 }
 
 function _ngxcWriteTabMylarConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
                 proxy_set_header Host \$host;
                 proxy_set_header X-Real-IP \$remote_addr;
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto \$scheme;
-              }";
+        }";
 
       file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabNetdataConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_redirect off;
                 proxy_set_header Host \$host;
@@ -316,13 +321,14 @@ function _ngxcWriteTabNetdataConfig($url, $path, $name, $group) {
                 proxy_set_header Connection \"keep-alive\";
                 proxy_store off;
                 proxy_pass $url/;
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabNowshowingConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_set_header Host \$host;
                 proxy_set_header X-Forwarded-Host \$host;
@@ -332,13 +338,14 @@ function _ngxcWriteTabNowshowingConfig($url, $path, $name, $group) {
                 proxy_pass_request_headers on;
                 proxy_set_header Connection \"keep-alive\";
                 proxy_pass $url/;
-              }";
+        }";
 
       file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabNzbGetConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
                 proxy_set_header X-Real-IP \$remote_addr;
@@ -349,12 +356,14 @@ function _ngxcWriteTabNzbGetConfig($url, $path, $name, $group) {
                 proxy_set_header Accept-Encoding \"\";
                 sub_filter '</head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/ydkmlt84/DarkerNZBget/develop/nzbget_custom_darkblue.css\"></head>';
                 sub_filter_once on;
-              }";
+        }";
+
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabNzbHydraConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
                 proxy_set_header X-Real-IP \$remote_addr;
@@ -362,12 +371,14 @@ function _ngxcWriteTabNzbHydraConfig($url, $path, $name, $group) {
                 proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
-              }";
+        }";
+
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabOmbiConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass  $url/;
                 proxy_cache_bypass \$http_upgrade;
@@ -375,27 +386,25 @@ function _ngxcWriteTabOmbiConfig($url, $path, $name, $group) {
                 proxy_set_header Upgrade \$http_upgrade;
                 proxy_set_header X-Forwarded-Host \$server_name;
                 proxy_set_header X-Forwarded-Ssl on;
-              
-                # Basic Proxy Config
                 proxy_set_header X-Real-IP \$remote_addr;
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
-              }
-              location /dist/ {
+        }
+        location /dist/ {
                 return 301 $path\$request_uri;
-              }";
+        }";
         
       file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabPlexConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 return 301 /web;
-              }
-              
-              location ~ ^/(\?(?:.*)(X-Plex-Device=)|web|video|photo|library|web|status|system|updater|clients|:|playQueues)(.*) {
+        }
+        location ~ ^/(\?(?:.*)(X-Plex-Device=)|web|video|photo|library|web|status|system|updater|clients|:|playQueues)(.*) {
                 proxy_pass $url;
                 proxy_redirect  $url /;
                 proxy_set_header X-Real-IP \$remote_addr;
@@ -407,13 +416,14 @@ function _ngxcWriteTabPlexConfig($url, $path, $name, $group) {
                 proxy_set_header Connection \"upgrade\";
                 proxy_read_timeout 36000s;
                 proxy_pass_request_headers on;
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabQbittorrentConfig($url, $path, $name, $group) {
-        $data = "location ~ $path(?<url>.*) {
+        $data = "
+        location ~ $path(?<url>.*) {
                 auth_request /auth-$group;
                 proxy_pass  $path/\$url;
                 proxy_set_header X-Forwarded-Host \$host;
@@ -422,13 +432,14 @@ function _ngxcWriteTabQbittorrentConfig($url, $path, $name, $group) {
                 proxy_set_header Referer '';
                 proxy_set_header Origin '';
                 add_header X-Frame-Options \"SAMEORIGIN\";
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabRutorrentConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
                 proxy_set_header Host \$server_name;
@@ -436,34 +447,34 @@ function _ngxcWriteTabRutorrentConfig($url, $path, $name, $group) {
                 proxy_set_header X-Forwarded-Host \$server_name;
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
                 proxy_redirect off;
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabTautulliConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
-                
                 proxy_set_header X-Forwarded-Host \$server_name;
                 proxy_set_header X-Real-IP \$remote_addr;
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
-              
                 location $path\api/ {
-                  auth_request off;
-                  proxy_pass $url/api/;
+                        auth_request off;
+                        proxy_pass $url/api/;
                 }
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabTransmissionConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_set_header X-Real-IP \$remote_addr;
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -485,19 +496,20 @@ function _ngxcWriteTabTransmissionConfig($url, $path, $name, $group) {
                 location /transmission {
                   return 301 https://\$server_name".$path."web;
                 }
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
 
 function _ngxcWriteTabUbooquityConfig($url, $path, $name, $group) {
-        $data = "location $path {
+        $data = "
+        location $path {
                 auth_request /auth-$group;
                 proxy_pass $url/;
                 proxy_set_header Host \$host;
                 proxy_set_header X-Real-IP \$remote_addr;
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-              }";
+        }";
 
         file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
 }
