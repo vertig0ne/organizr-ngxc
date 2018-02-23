@@ -147,6 +147,9 @@ function _ngxcWriteTabConfig($tab) {
                 case "ubooquity":
                         _ngxcWriteTabUbooquityConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
+                case "rutorrent":
+                        _ngxcWriteTabRutorrentConfig($url, $oath, $nameLower, $tab["group_id"]);
+                        break;
         }
 }
 
