@@ -438,7 +438,7 @@ function _ngxcWriteTabQbittorrentConfig($url, $path, $name, $group) {
         $data = "
         location ~ $path(?<url>.*) {
                 auth_request /auth-$group;
-                proxy_pass  $path/\$url;
+                proxy_pass  $path\$url;
                 proxy_set_header X-Forwarded-Host \$host;
                 proxy_hide_header Referer;
                 proxy_hide_header Origin;
