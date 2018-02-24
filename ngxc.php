@@ -555,7 +555,7 @@ function NGXCWriteConfig() {
         }
         $file_contents = "location ~ /auth-(.*) {
                 internal;
-                rewrite ^/auth-(.*) /api/?v1/auth&group=$1;;
+                rewrite ^/auth-(.*) /api/?v1/auth&group=$1;
         }\n";
         $file_contents .= "include ".$GLOBALS['dbLocation']."proxy/*.conf;\n";
 
