@@ -228,7 +228,7 @@ function _ngxcWriteTabCalibreWebConfig($url, $path, $name, $group, $theme = fals
                         set \$test \"\${test}A\";
                 }
 
-                if (\$test == \"\") {
+                if (\$test = \"\") {
                         proxy_set_header Accept-Encoding \"\";
                         sub_filter '</head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/leram84/layer.Cake/dev/CSS/caliBlur-Demo.css\"> </head>';
                         sub_filter_once on;
@@ -476,7 +476,7 @@ function _ngxcWriteTabTautulliConfig($url, $path, $name, $group) {
                 proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
-                location $path\api/ {
+                location $path/api/ {
                         auth_request off;
                         proxy_pass $url/api/;
                 }
