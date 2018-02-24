@@ -180,7 +180,7 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group, $theme = false) {
         if ($theme) {
                 $data .= "
                 proxy_set_header Accept-Encoding \"\";
-                sub_filter '<//head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"//rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
+                sub_filter '<//head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
                 sub_filter_once on;\n";
         }
         $data .= "
