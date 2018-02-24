@@ -225,7 +225,7 @@ function _ngxcWriteTabCalibreWebConfig($url, $path, $name, $group, $theme = fals
                 $data .= "
                 set \$test \"\";
                 if (\$http_user_agent ~* '(iPhone|iPod|android|blackberry)') {
-                        set \$test \"\${test}A\"
+                        set \$test \"\${test}A\";
                 }
 
                 if (\$test == \"\") {
