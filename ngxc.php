@@ -25,6 +25,7 @@ function _ngxcTypeOptions() {
                 'deluge' => 'Deluge',
                 'guacamole' => 'Guacamole',
                 'jackett' => 'Jackett',
+                'lazylibrarian' => 'LazyLibrarian',
                 'lidarr' => 'Lidarr',
                 'mylar' => 'Mylar',
                 'netdata' => 'NetData',
@@ -41,7 +42,8 @@ function _ngxcTypeOptions() {
                 'sonarr' => 'Sonarr',
                 'sonarrDarker' => 'Sonarr (Darkerr Theme)',
                 'tautulli' => 'Tautulli',
-                'ubooquity' => 'Ubooquity'
+                'ubooquity' => 'Ubooquity',
+                'youtube-dl' => 'YouTube-DL Server'
         );
         $data = array();
         $t = 0;
@@ -121,6 +123,7 @@ function _ngxcWriteTabConfig($tab) {
                         _ngxcWriteTabJackettConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "mylar":
+                case "lazylibrarian":
                         _ngxcWriteTabMylarConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "netdata":
@@ -533,7 +536,7 @@ function _ngxcWriteTabUbooquityConfig($url, $path, $name, $group) {
 ###############
 
 function NGXCGetSettings() {
-	$data = _ngxcGetTabs();
+        $data = _ngxcGetTabs();
         $data['Actions'] = array(
 		array(
 			'type' => 'button',
