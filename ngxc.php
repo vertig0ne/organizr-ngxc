@@ -212,28 +212,29 @@ function _ngxcWriteTabAirSonicConfig($url, $path, $name, $group) {
 
 function _ngxcWriteTabCalibreWebConfig($url, $path, $name, $group, $theme = false) {
         $data = "
+
         location $path {
-                auth_request /auth-$group;
                 proxy_bind \$server_addr;
-                proxy_pass $url/;
+                proxy_pass $url;
                 proxy_set_header Host \$http_host;
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
                 proxy_set_header X-Scheme \$scheme;
-                proxy_set_header X-Script-Name $path;
-        ";
-        if ($theme) {
-                $data .= "
-                set \$test \"\";
-                if (\$http_user_agent ~* '(iPhone|iPod|android|blackberry)') {
-                        set \$test \"\${test}A\";
-                }
-
-                if (\$test = \"\") {
-                        proxy_set_header Accept-Encoding \"\";
-                        sub_filter '</head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/leram84/layer.Cake/dev/CSS/caliBlur-Demo.css\"> </head>';
-                        sub_filter_once on;
-                }
+                proxy_set_header X-Script-Name \$path;
                 ";
+        if ($theme) {
+                $data .="
+                set \$filter_output '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/leram84/layer.Cake/dev/CSS/caliBlur-Demo.css\"></head>';
+            
+                if (\$http_user_agent ~* '(iPhone|iPod|android|blackberry)') {
+                    set \$filter_output '</head>';
+                }
+                if (\$request_uri ~* '(\/read\/)') {
+                    set \$filter_output '</head>';
+                }
+            
+                proxy_set_header Accept-Encoding \"\";
+                sub_filter '</head>' \$filter_output;
+                sub_filter_once on;\n";
         }
         $data .= "}";
 
