@@ -365,6 +365,7 @@ function _ngxcWriteTabNzbGetConfig($url, $path, $name, $group, $theme = false) {
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
                 proxy_set_header Accept-Encoding \"\";
+                proxy_set_header Host \$host;
         ";
         if ($theme) {
                 $data .= "
