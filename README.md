@@ -35,7 +35,7 @@ Nginx reload each time the configuration file is saved may be necessary. Will be
 
     location ~ /auth-(.*) {
         internal;
-        rewrite ^ /api/?v1/auth&group=$1;
+        rewrite ^/auth-(.*) /api/?v1/auth&group=$1;
     }
     
 This is how the nginx authentication works. In the same way as Organizr v1 worked with a few minor changes. Only one authentication block is necessary now. As we can call this via `auth_request /auth-0`. The number is the `group_id` for the group with the lowest permission allowed to access.
