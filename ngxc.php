@@ -408,6 +408,7 @@ function _ngxcWriteTabOmbiConfig($url, $path, $name, $group) {
                 proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
+                proxy_set_header Host \$host;
         }
         location /dist/ {
                 return 301 $path\$request_uri;
