@@ -482,7 +482,7 @@ function _ngxcWriteTabTautulliConfig($url, $path, $name, $group) {
                 proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_http_version 1.1;
                 proxy_no_cache \$cookie_session;
-                location $path/api/ {
+                location ".$path."api/ {
                         auth_request off;
                         proxy_pass $url/api/;
                 }
