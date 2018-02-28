@@ -538,7 +538,15 @@ function _ngxcWriteTabUbooquityConfig($url, $path, $name, $group) {
 ###############
 
 function NGXCGetSettings() {
-        $data = _ngxcGetTabs();
+        $data = array(
+                'Core' => array(
+                        'type' => 'input',
+                        'name' => 'NGXC_SAVE_PATH',
+                        'label' => 'Configuration Save Path',
+                        'value' => $GLOBALS['NGXC_SAVE_PATH']
+                )
+        );
+        $data .= _ngxcGetTabs();
         $data['Actions'] = array(
 		array(
 			'type' => 'button',
