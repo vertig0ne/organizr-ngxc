@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['data']['plugin'])){
     switch ($_POST['data']['plugin']) {
-        case 'NGXC/settings/get':
+        case 'ngxc/settings/get':
             if(qualifyRequest(1)){
                 $result['status'] = 'success';
                 $result['statusText'] = 'success';
@@ -12,9 +12,9 @@ if(isset($_POST['data']['plugin'])){
                 $result['data'] = null;
             }
             break;
-        case 'NGXC/settings/save':
+        case 'ngxc/settings/save':
             if(qualifyRequest(1)){
-		NGXCWriteConfig();
+		        NGXCWriteConfig();
                 $result['status'] = 'success';
                 $result['statusText'] = 'success';
                 $result['data'] = true;

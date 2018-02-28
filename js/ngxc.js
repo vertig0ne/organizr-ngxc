@@ -1,4 +1,4 @@
-$(document).on('change asColorPicker::close', '#NGXC-settings-page :input', function(e) {
+$(document).on('change asColorPicker::close', '#ngxc-settings-page :input', function(e) {
     var input = $(this);
     switch ($(this).attr('type')) {
         case 'switch':
@@ -21,34 +21,33 @@ $(document).on('change asColorPicker::close', '#NGXC-settings-page :input', func
     //callbacks.add( buildCustomizeAppearance );
     settingsAPI(post,callbacks);
     //disable button then renable
-    $('#PHPMAILER-settings-page :input').prop('disabled', 'true');
+    $('#ngxc-settings-page :input').prop('disabled', 'true');
     setTimeout(
         function(){
-            $('#PHPMAILER-settings-page :input').prop('disabled', null);
+            $('#ngxc-settings-page :input').prop('disabled', null);
             input.emulateTab();
         },
         2000
     );
-
 });
 
-$(document).on('click', '#NGXC-settings-button', function() {
+$(document).on('click', '#ngxc-settings-button', function() {
     var post = {
-        plugin:'NGXC/settings/get', // used for switch case in your API call
+        plugin:'ngxc/settings/get', // used for switch case in your API call
     };
     ajaxloader(".content-wrap","in");
     organizrAPI('POST','api/?v1/plugin',post).success(function(data) {
         var response = JSON.parse(data);
-        $('#NGXC-settings-items').html(buildFormGroup(response.data));
+        $('#ngxc-settings-items').html(buildFormGroup(response.data));
     }).fail(function(xhr) {
         console.error("Organizr Function: API Connection Failed");
     });
     ajaxloader();
 });
 
-$(document).on('click', '.NGXC-WriteConfig', function() {
+$(document).on('click', '.ngxc-write-config', function() {
     var post = {
-        plugin:'NGXC/settings/save', // used for switch case in your API call
+        plugin:'ngxc/settings/save', // used for switch case in your API call
     };
     ajaxloader(".content-wrap","in");
     organizrAPI('POST','api/?v1/plugin',post).success(function(data) {
