@@ -548,7 +548,7 @@ function NGXCGetSettings() {
                         )
                 )
         );
-        $data .= _ngxcGetTabs();
+        $data = array_merge($data, _ngxcGetTabs());
         $data['Actions'] = array(
 		array(
 			'type' => 'button',
