@@ -99,69 +99,69 @@ function _ngxcWriteTabConfig($tab) {
                 case "sonarr":
                 case "radarr":
                 case "lidarr":
-                        _ngxcWriteTabSonarrConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabSonarrConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "sonarrDarker":
                 case "radarrDarker":
-                        _ngxcWriteTabSonarrConfig($url, $path, $nameLower, $tab["group_id"], true);
+                        return _ngxcWriteTabSonarrConfig($url, $path, $nameLower, $tab["group_id"], true);
                         break;
                 case "airsonic":
-                        _ngxcWriteTabAirSonicConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabAirSonicConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "calibre-web":
-                        _ngxcWriteTabCalibreWebConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabCalibreWebConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "calibre-webBlur":
-                        _ngxcWriteTabCalibreWebConfig($url, $path, $nameLower, $tab["group_id"], true);
+                        return _ngxcWriteTabCalibreWebConfig($url, $path, $nameLower, $tab["group_id"], true);
                         break;
                 case "deluge":
-                        _ngxcWriteTabDelugeConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabDelugeConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "guacamole":
-                        _ngxcWriteTabGuacamoleConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabGuacamoleConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "jackett":
-                        _ngxcWriteTabJackettConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabJackettConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "mylar":
                 case "lazylibrarian":
-                        _ngxcWriteTabMylarConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabMylarConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "netdata":
-                        _ngxcWriteTabNetdataConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabNetdataConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "nowshowing":
-                        _ngxcWriteTabNowshowingConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabNowshowingConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "nzbget":
-                        _ngxcWriteTabNzbGetConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabNzbGetConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "nzbgetDark":
-                        _ngxcWriteTabNzbGetConfig($url, $path, $nameLower, $tab["group_id"], true);
+                        return _ngxcWriteTabNzbGetConfig($url, $path, $nameLower, $tab["group_id"], true);
                         break;
                 case "nzbhydra":
                         _ngxcWriteTabNzbHydraConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "ombi":
-                        _ngxcWriteTabOmbiConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabOmbiConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "plex":
-                        _ngxcWriteTabPlexConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabPlexConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "qbittorrent":
-                        _ngxcWriteTabQbittorrentConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabQbittorrentConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "tautulli":
-                        _ngxcWriteTabTautulliConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabTautulliConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "transmission":
-                        _ngxcWriteTabTransmissionConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabTransmissionConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "ubooquity":
-                        _ngxcWriteTabUbooquityConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabUbooquityConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
                 case "rutorrent":
-                        _ngxcWriteTabRutorrentConfig($url, $path, $nameLower, $tab["group_id"]);
+                        return _ngxcWriteTabRutorrentConfig($url, $path, $nameLower, $tab["group_id"]);
                         break;
         }
 }
@@ -171,30 +171,31 @@ function _ngxcWriteTabConfig($tab) {
 ###############
 
 function _ngxcWriteTabSonarrConfig($url, $path, $name, $group, $theme = false) {
-        $data = "
-        location $path {
-                auth_request /auth-$group;
-                proxy_pass $url/;
-                proxy_set_header X-Real-IP \$remote_addr; 
-                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto \$scheme;
-                proxy_http_version 1.1;
-                proxy_no_cache \$cookie_session;";
+        $data = 
+"location $path {
+        auth_request /auth-$group;
+        proxy_pass $url/;
+        proxy_set_header X-Real-IP \$remote_addr; 
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_http_version 1.1;
+        proxy_no_cache \$cookie_session;";
         
         if ($theme) {
-                $data .= "
-                proxy_set_header Accept-Encoding \"\";
-                sub_filter '</head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
-                sub_filter_once on;\n";
+                $data .= 
+        "proxy_set_header Accept-Encoding \"\";
+        sub_filter '</head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
+        sub_filter_once on;\n";
         }
-        $data .= "
-                location ".$path."api {
-                        auth_request off;
-                        proxy_pass $url/api;
-                }
-        }";
+        $data .= 
+        "location ".$path."api {
+                auth_request off;
+                proxy_pass $url/api;
+        }
+}";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabAirSonicConfig($url, $path, $name, $group) {
@@ -203,7 +204,7 @@ function _ngxcWriteTabAirSonicConfig($url, $path, $name, $group) {
                 auth_request /auth-$group;
                 proxy_set_header X-Real-IP         \$remote_addr;
                 proxy_set_header X-Forwarded-For   \$proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto https;
+                proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_set_header X-Forwarded-Host  \$http_host;
                 proxy_set_header Host              \$http_host;
                 proxy_max_temp_file_size           0;
@@ -211,7 +212,8 @@ function _ngxcWriteTabAirSonicConfig($url, $path, $name, $group) {
                 proxy_redirect                     http:// https://;
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabCalibreWebConfig($url, $path, $name, $group, $theme = false) {
@@ -242,7 +244,8 @@ function _ngxcWriteTabCalibreWebConfig($url, $path, $name, $group, $theme = fals
         }
         $data .= "}";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabDelugeConfig($url, $path, $name, $group) {
@@ -264,7 +267,8 @@ function _ngxcWriteTabDelugeConfig($url, $path, $name, $group) {
                 add_header X-Frame-Options SAMEORIGIN;
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabGuacamoleConfig($url, $path, $name, $group) {
@@ -282,7 +286,8 @@ function _ngxcWriteTabGuacamoleConfig($url, $path, $name, $group) {
                 proxy_no_cache \$cookie_session;
         }";
 
-      file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabJackettConfig($url, $path, $name, $group) {
@@ -302,8 +307,9 @@ function _ngxcWriteTabJackettConfig($url, $path, $name, $group) {
                 proxy_buffers 32 4k;
               }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
-}
+              $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+              return $result;
+      }
 
 function _ngxcWriteTabMylarConfig($url, $path, $name, $group) {
         $data = "
@@ -316,7 +322,8 @@ function _ngxcWriteTabMylarConfig($url, $path, $name, $group) {
                 proxy_set_header X-Forwarded-Proto \$scheme;
         }";
 
-      file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabNetdataConfig($url, $path, $name, $group) {
@@ -335,7 +342,8 @@ function _ngxcWriteTabNetdataConfig($url, $path, $name, $group) {
                 proxy_pass $url/;
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabNowshowingConfig($url, $path, $name, $group) {
@@ -352,7 +360,8 @@ function _ngxcWriteTabNowshowingConfig($url, $path, $name, $group) {
                 proxy_pass $url/;
         }";
 
-      file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabNzbGetConfig($url, $path, $name, $group, $theme = false) {
@@ -377,7 +386,8 @@ function _ngxcWriteTabNzbGetConfig($url, $path, $name, $group, $theme = false) {
         $data .= "
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabNzbHydraConfig($url, $path, $name, $group) {
@@ -392,7 +402,8 @@ function _ngxcWriteTabNzbHydraConfig($url, $path, $name, $group) {
                 proxy_no_cache \$cookie_session;
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabOmbiConfig($url, $path, $name, $group) {
@@ -416,7 +427,8 @@ function _ngxcWriteTabOmbiConfig($url, $path, $name, $group) {
                 return 301 $path\$request_uri;
         }";
         
-      file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabPlexConfig($url, $path, $name, $group) {
@@ -438,7 +450,8 @@ function _ngxcWriteTabPlexConfig($url, $path, $name, $group) {
                 proxy_pass_request_headers on;
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabQbittorrentConfig($url, $path, $name, $group) {
@@ -454,7 +467,8 @@ function _ngxcWriteTabQbittorrentConfig($url, $path, $name, $group) {
                 add_header X-Frame-Options \"SAMEORIGIN\";
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabRutorrentConfig($url, $path, $name, $group) {
@@ -469,7 +483,8 @@ function _ngxcWriteTabRutorrentConfig($url, $path, $name, $group) {
                 proxy_redirect off;
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabTautulliConfig($url, $path, $name, $group) {
@@ -489,7 +504,8 @@ function _ngxcWriteTabTautulliConfig($url, $path, $name, $group) {
                 }
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabTransmissionConfig($url, $path, $name, $group) {
@@ -518,7 +534,8 @@ function _ngxcWriteTabTransmissionConfig($url, $path, $name, $group) {
                 }
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 function _ngxcWriteTabUbooquityConfig($url, $path, $name, $group) {
@@ -531,7 +548,8 @@ function _ngxcWriteTabUbooquityConfig($url, $path, $name, $group) {
                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         }";
 
-        file_put_contents($GLOBALS['dbLocation'].'proxy'.'/'.$name.'.conf', $data);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/proxy'.'/'.$name.'.conf', $data) !== false);
+        return $result;
 }
 
 ###############
@@ -539,7 +557,17 @@ function _ngxcWriteTabUbooquityConfig($url, $path, $name, $group) {
 ###############
 
 function NGXCGetSettings() {
-        $data = _ngxcGetTabs();
+        $data = array(
+                "Core" => array(
+                        array(
+                                'type' => 'input',
+                                'name' => 'NGXC_SAVE_PATH',
+                                'label' => 'Configuration Save Path',
+                                'value' => $GLOBALS['NGXC_SAVE_PATH'] ?: $GLOBALS['dbLocation']
+                        )
+                )
+        );
+        $data = array_merge($data, _ngxcGetTabs());
         $data['Actions'] = array(
 		array(
 			'type' => 'button',
@@ -553,18 +581,25 @@ function NGXCGetSettings() {
 }
 
 function NGXCWriteConfig() {
-        if (!file_exists($GLOBALS['dbLocation'].'proxy')) {
-                mkdir($GLOBALS['dbLocation'].'proxy', 0777, true);
+        if (!is_writable($GLOBALS['NGXC_SAVE_PATH'])) { return false; }
+
+        if (!file_exists($GLOBALS['NGXC_SAVE_PATH'].'/proxy')) {
+                mkdir($GLOBALS['NGXC_SAVE_PATH'].'/proxy', 0777, true);
         }
-	$tabs = _ngxcGetAllTabs();
-	foreach ($tabs["tabs"] as $tab) {
-                _ngxcWriteTabConfig($tab);
+        $tabs = _ngxcGetAllTabs();
+        $return = true;
+        foreach ($tabs["tabs"] as $tab) {
+                $res = _ngxcWriteTabConfig($tab);
+                if ($res === false) $return = false;
         }
         $file_contents = "location ~ /auth-(.*) {
                 internal;
                 rewrite ^/auth-(.*) /api/?v1/auth&group=$1;
         }\n";
-        $file_contents .= "include ".$GLOBALS['dbLocation']."proxy/*.conf;\n";
-
-        file_put_contents($GLOBALS['dbLocation'].'ngxc.conf', $file_contents);
+        $file_contents .= "include ".$GLOBALS['NGXC_SAVE_PATH']."/proxy/*.conf;\n";
+        if ($return) {
+                $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/ngxc.conf', $file_contents) !== false);
+                return (bool)$result;
+        }
+        return $return;
 }

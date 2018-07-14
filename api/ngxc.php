@@ -14,10 +14,17 @@ if(isset($_POST['data']['plugin'])){
             break;
         case 'ngxc/settings/save':
             if(qualifyRequest(1)){
-		        NGXCWriteConfig();
-                $result['status'] = 'success';
-                $result['statusText'] = 'success';
-                $result['data'] = true;
+                $save = NGXCWriteConfig();
+                if ($save == true) {
+                    $result['status'] = 'success';
+                    $result['statusText'] = 'success';
+                    $result['data'] = true;
+                }
+                else { 
+                    $result['status'] = 'error';
+                    $result['statusText'] = 'There was an error with saving the configuration';
+                    $result['data'] = null;
+                }
             }else{
                 $result['status'] = 'error';
                 $result['statusText'] = 'API/Token invalid or not set';
