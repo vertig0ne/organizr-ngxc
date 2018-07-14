@@ -588,9 +588,9 @@ function NGXCWriteConfig() {
         }
         $tabs = _ngxcGetAllTabs();
         $return = true;
-	foreach ($tabs["tabs"] as $tab) {
+        foreach ($tabs["tabs"] as $tab) {
                 $res = _ngxcWriteTabConfig($tab);
-                if ($res == false) $return = false;
+                if ($res === false) $return = false;
         }
         $file_contents = "location ~ /auth-(.*) {
                 internal;
