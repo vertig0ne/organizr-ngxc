@@ -20,9 +20,9 @@ $(document).on('click', '.ngxc-write-config', function() {
     organizrAPI('POST','api/?v1/plugin',post).success(function(data) {
         var response = JSON.parse(data);
         if(response.data == true){
-            messageSingle('',window.lang.translate('Write Successful'),'bottom-right','#FFF','success','5000');
+            message('',window.lang.translate('Write Successful'),activeInfo.settings.notifications.position,'#FFF','success','5000');
         }else{
-            messageSingle('',response.data,'bottom-right','#FFF','error','5000');
+            message('',response.data,activeInfo.settings.notifications.position,'#FFF','success','5000');
         }
     }).fail(function(xhr) {
         console.error("Organizr Function: API Connection Failed");
