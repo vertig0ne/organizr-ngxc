@@ -22,7 +22,7 @@ $(document).on('click', '.ngxc-write-config', function() {
         if(response.data == true){
             message('',window.lang.translate('Write Successful'),activeInfo.settings.notifications.position,'#FFF','success','5000');
         }else{
-            message('',response.data.statusText,activeInfo.settings.notifications.position,'#FFF','error','5000');
+            message('',window.lang.translate('There was an error saving the files'),activeInfo.settings.notifications.position,'#FFF','error','5000');
         }
     }).fail(function(xhr) {
         console.error("Organizr Function: API Connection Failed");
