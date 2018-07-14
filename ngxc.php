@@ -9,7 +9,8 @@ $GLOBALS['plugins'][]['ngxc'] = array(
     'version'=>'0.2.0',
     'image'=>'plugins/images/ngxc.png',
     'settings'=>true,
-    'homepage'=>false
+    'homepage'=>false,
+    'license'=>'personal,business'
 );
 
 ###############
