@@ -15,7 +15,7 @@ if(isset($_POST['data']['plugin'])){
         case 'ngxc/settings/save':
             if(qualifyRequest(1)){
                 $save = NGXCWriteConfig();
-                if ($save === true) {
+                if ($save == true) {
                     $result['status'] = 'success';
                     $result['statusText'] = 'success';
                     $result['data'] = true;

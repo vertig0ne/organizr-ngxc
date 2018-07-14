@@ -564,8 +564,10 @@ function NGXCGetSettings() {
 }
 
 function NGXCWriteConfig() {
-        if (!file_exists($GLOBALS['NGXC_SAVE_PATH'].'proxy')) {
-                mkdir($GLOBALS['NGXC_SAVE_PATH'].'proxy', 0777, true);
+        if (!is_writable($GLOBALS['NGXC_SAVE_PATH'])) { return false; }
+
+        if (!file_exists($GLOBALS['NGXC_SAVE_PATH'].'/proxy')) {
+                mkdir($GLOBALS['NGXC_SAVE_PATH'].'/proxy', 0777, true);
         }
 	$tabs = _ngxcGetAllTabs();
 	foreach ($tabs["tabs"] as $tab) {
@@ -575,8 +577,8 @@ function NGXCWriteConfig() {
                 internal;
                 rewrite ^/auth-(.*) /api/?v1/auth&group=$1;
         }\n";
-        $file_contents .= "include ".$GLOBALS['NGXC_SAVE_PATH']."proxy/*.conf;\n";
+        $file_contents .= "include ".$GLOBALS['NGXC_SAVE_PATH']."/proxy/*.conf;\n";
 
-        $result = file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'ngxc.conf', $file_contents);
+        $result = (file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'/ngxc.conf', $file_contents) !== false);
         return (bool)$result;
 }
