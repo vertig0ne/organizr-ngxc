@@ -94,6 +94,7 @@ function _ngxcWriteTabConfig($tab) {
         $type = $GLOBALS['NGXC_'.$name.'_TYPE'];
         $path = $tab["url"];
         $url = $GLOBALS['NGXC_'.$name.'_URL'];
+        $return = false;
         switch($type) {
                 case "sonarr":
                 case "radarr":
@@ -170,28 +171,28 @@ function _ngxcWriteTabConfig($tab) {
 ###############
 
 function _ngxcWriteTabSonarrConfig($url, $path, $name, $group, $theme = false) {
-        $data = "
-        location $path {
-                auth_request /auth-$group;
-                proxy_pass $url/;
-                proxy_set_header X-Real-IP \$remote_addr; 
-                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto \$scheme;
-                proxy_http_version 1.1;
-                proxy_no_cache \$cookie_session;";
+        $data = 
+"location $path {
+        auth_request /auth-$group;
+        proxy_pass $url/;
+        proxy_set_header X-Real-IP \$remote_addr; 
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_http_version 1.1;
+        proxy_no_cache \$cookie_session;";
         
         if ($theme) {
-                $data .= "
-                proxy_set_header Accept-Encoding \"\";
-                sub_filter '</head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
-                sub_filter_once on;\n";
+                $data .= 
+        "proxy_set_header Accept-Encoding \"\";
+        sub_filter '</head>' '<link rel=\"stylesheet\" type=\"text/css\" href=\"https://rawgit.com/iFelix18/Darkerr/master/darkerr.css\"></head>';
+        sub_filter_once on;\n";
         }
-        $data .= "
-                location ".$path."api {
-                        auth_request off;
-                        proxy_pass $url/api;
-                }
-        }";
+        $data .= 
+        "location ".$path."api {
+                auth_request off;
+                proxy_pass $url/api;
+        }
+}";
 
         file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'proxy'.'/'.$name.'.conf', $data);
 }
@@ -202,7 +203,7 @@ function _ngxcWriteTabAirSonicConfig($url, $path, $name, $group) {
                 auth_request /auth-$group;
                 proxy_set_header X-Real-IP         \$remote_addr;
                 proxy_set_header X-Forwarded-For   \$proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto https;
+                proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_set_header X-Forwarded-Host  \$http_host;
                 proxy_set_header Host              \$http_host;
                 proxy_max_temp_file_size           0;
@@ -575,5 +576,6 @@ function NGXCWriteConfig() {
         }\n";
         $file_contents .= "include ".$GLOBALS['NGXC_SAVE_PATH']."proxy/*.conf;\n";
 
-        file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'ngxc.conf', $file_contents);
+        $result = file_put_contents($GLOBALS['NGXC_SAVE_PATH'].'ngxc.conf', $file_contents);
+        return (bool)$result;
 }
