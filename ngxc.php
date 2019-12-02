@@ -174,7 +174,7 @@ function _ngxcWriteTabSonarrConfig($url, $path, $name, $group, $theme = false) {
         $data = 
 "location $path {
         auth_request /auth-$group;
-        proxy_pass $url/;
+        proxy_pass $url;
         proxy_set_header X-Real-IP \$remote_addr; 
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
